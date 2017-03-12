@@ -36,7 +36,9 @@ var Article = React.createClass({
   },
   readmoreClick: function (e) {
     e.preventDefault();
-    this.setState({visible: true});
+    this.setState({visible: true}, function () {
+      alert('State was changed');
+    });
   },
   render: function() {
     var author = this.props.data.author,
@@ -47,7 +49,11 @@ var Article = React.createClass({
       <div className="article">
         <p className="author__news">{author} </p>
         <p className="text__news"> {text} </p>
-        <a href="#" className={'readmore ' + (visible? 'none': '')} onClick={this.readmoreClick}>Read more</a>
+        <a href="#"
+          className={'readmore ' + (visible? 'none': '')}
+          onClick={this.readmoreClick}>
+          Read more
+        </a>
         <p className={"bigText__news " + (visible? '': 'none')}>{bigText} </p>
       </div>
     )
@@ -58,6 +64,14 @@ var News = React.createClass({
   propTypes: {
     data: React.PropTypes.array.isRequired
   },
+  // getInitialState: function() {
+  //   return {
+  //     counter: 0
+  //   }
+  // },
+  // onTotalNewsClick: function() {
+  //   this.setState({counter: ++this.state.counter})
+  // },
   render: function() {
     var data = this.props.data;
     var newsTemplate;
@@ -75,11 +89,57 @@ var News = React.createClass({
     return (
       <div className="news">
         {newsTemplate}
-        <strong className={'news__count '+(data.length>0? '': 'none')}> Всего новостей: {data.length} </strong>
+        <strong
+          className={'news__count '+(data.length>0? '': 'none')}>
+          Всего новостей: {data.length}
+        </strong>
       </div>
     );
   }
 });
+
+var TestInput = React.createClass({
+  onButtonClick: function(e) {
+    alert(ReactDOM.findDOMNode(this.refs.myTestInput).value);
+    console.log(this.refs)
+  },
+  render: function() {
+    return (
+      <div>
+        <input
+          className="test-input"
+          defaultValue=''
+          onChange={this.onChangeHandler}
+          placeholder='введите значение'
+          ref='myTestInput'/>
+        <button
+          onClick={this.onButtonClick}
+          ref='myTestButton'>
+          'Button'
+        </button>
+      </div>
+    )
+  }
+})
+var TestButton = React.createClass({
+  getInitialState: function() {
+    return {
+      buttonVal: ''
+    }
+  },
+  onButtonClick: function(e) {
+    this.setState({buttonVal: this.state.myVal})
+  },
+  render: function() {
+    return (
+      <button
+        value={this.state.buttonVal}
+        onClick={this.onButtonClick}>
+        'Button'
+      </button>
+    )
+  }
+})
 
 // var Comments = React.createClass({
 //   render: function () {
@@ -96,6 +156,7 @@ var App = React.createClass({
     return (
       <div className="app">
         <h3> Новости </h3>
+        <TestInput />
         <News data={myNews}/>
       </div>
     );
