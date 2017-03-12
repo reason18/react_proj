@@ -25,16 +25,20 @@ var Article = React.createClass({
   propTypes: {
     data: React.PropTypes.shape({
       author: React.PropTypes.string.isRequired,
-      text: React.PropTypes.string.isRequired
+      text: React.PropTypes.string.isRequired,
+      bigText: React.PropTypes.string.isRequired
     })
   },
   render: function() {
     var author = this.props.data.author,
-        text = this.props.data.text;
+        text = this.props.data.text,
+        bigText = this.props.data.bigText;
     return (
       <div className="article">
         <p className="author__news">{author} </p>
         <p className="text__news"> {text} </p>
+        <a href="#" className="readmore">Read more</a>
+        <p className="bigText__news">{bigText} </p>
       </div>
     )
   }
