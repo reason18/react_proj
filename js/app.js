@@ -36,9 +36,7 @@ var Article = React.createClass({
   },
   readmoreClick: function (e) {
     e.preventDefault();
-    this.setState({visible: true}, function () {
-      alert('State was changed');
-    });
+    this.setState({visible: true});
   },
   render: function() {
     var author = this.props.data.author,
@@ -98,51 +96,77 @@ var News = React.createClass({
   }
 });
 
-var TestInput = React.createClass({
+var Add = React.createClass({
+  getInitialState: function() { //устанавливаем начальное состояние (state)
+   return {
+     btnIsDisabled: true
+   };
+ },
   componentDidMount: function() {
-    ReactDOM.findDOMNode(this.refs.myTestInput).focus();
+    ReactDOM.findDOMNode(this.refs.author).focus();
   },
   onButtonClick: function(e) {
-    alert(ReactDOM.findDOMNode(this.refs.myTestInput).value);
-    console.log(this.refs)
+    e.preventDefault();
+    var author = ReactDOM.findDOMNode(this.refs.author).value;
+    var text = ReactDOM.findDOMNode(this.refs.text).value;
+    alert(author + '\n' + text);
+  },
+  onCheckRuleClick: function(e) {
+    this.setState({btnIsDisabled: !this.state.btnIsDisabled}); //устанавливаем значение в state
   },
   render: function() {
     return (
-      <div>
+      <form className='add cf'>
         <input
-          className="test-input"
+          type='text'
+          className='add__author'
           defaultValue=''
-          onChange={this.onChangeHandler}
-          placeholder='введите значение'
-          ref='myTestInput'/>
-        <button
-          onClick={this.onButtonClick}
-          ref='myTestButton'>
-          'Button'
-        </button>
-      </div>
+          placeholder='Your name'
+          ref='author'
+        />
+        <textarea
+          className='add__text'
+          defaultValue=''
+          placeholder='News text'
+          ref='text'
+          ></textarea>
+          <label className='add__checkrule'>
+            <input
+              type='checkbox'
+              onChange={this.onCheckRuleClick}
+              ref='checkrule' />
+              I agree with a rules
+          </label>
+          <button
+            className='add__btn'
+            onClick={this.onButtonClick}
+            ref='alert_button'
+            disabled={this.state.btnIsDisabled}>
+            Show alert
+          </button>
+        </form>
     )
   }
 })
-var TestButton = React.createClass({
-  getInitialState: function() {
-    return {
-      buttonVal: ''
-    }
-  },
-  onButtonClick: function(e) {
-    this.setState({buttonVal: this.state.myVal})
-  },
-  render: function() {
-    return (
-      <button
-        value={this.state.buttonVal}
-        onClick={this.onButtonClick}>
-        'Button'
-      </button>
-    )
-  }
-})
+// var TestButton = React.createClass({
+//   getInitialState: function() {
+//     return {
+//       buttonVal: ''
+//     }
+//   },
+//   onButtonClick: function(e) {
+//     this.setState({buttonVal: this.state.myVal})
+//   },
+//   render: function() {
+//     return (
+//       <button
+//         value={this.state.buttonVal}
+//         onClick={this.onButtonClick}>
+//         'Button'
+//       </button>
+//     )
+//   }
+// })
 
 // var Comments = React.createClass({
 //   render: function () {
@@ -159,7 +183,7 @@ var App = React.createClass({
     return (
       <div className="app">
         <h3> Новости </h3>
-        <TestInput />
+        <Add />
         <News data={myNews}/>
       </div>
     );
