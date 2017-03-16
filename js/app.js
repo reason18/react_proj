@@ -97,9 +97,11 @@ var News = React.createClass({
 });
 
 var Add = React.createClass({
-  getInitialState: function() { //устанавливаем начальное состояние (state)
+  getInitialState: function() {
    return {
-     btnIsDisabled: true
+     agreeNotChecked: true,
+     authorIsEmpty: true,
+     textIsEmpty: true
    };
  },
   componentDidMount: function() {
@@ -112,20 +114,40 @@ var Add = React.createClass({
     alert(author + '\n' + text);
   },
   onCheckRuleClick: function(e) {
-    this.setState({btnIsDisabled: !this.state.btnIsDisabled}); //устанавливаем значение в state
+    if(this.state.agreeNotChecked) {this.setState({agreeNotChecked: false});}
+    else {this.setState({agreeNotChecked: true});}
+  },
+  onAuthorChange: function(e) {
+    if(e.target.value.trim().length >0) {
+      this.setState({authorIsEmpty: false})
+    } else {
+      this.setState({authorIsEmpty: true})
+    }
+  },
+  onTextChange: function(e) {
+    if(e.target.value.trim().length >0) {
+      this.setState({textIsEmpty: false})
+    } else {
+      this.setState({textIsEmpty: true})
+    }
   },
   render: function() {
+    var authorIsEmpty = this.state.authorIsEmpty,
+        textIsEmpty = this.state.textIsEmpty,
+        agreeNotChecked = this.state.agreeNotChecked;
     return (
       <form className='add cf'>
         <input
           type='text'
           className='add__author'
+          onChange={this.onAuthorChange}
           defaultValue=''
           placeholder='Your name'
           ref='author'
         />
         <textarea
           className='add__text'
+          onChange={this.onTextChange}
           defaultValue=''
           placeholder='News text'
           ref='text'
@@ -141,7 +163,7 @@ var Add = React.createClass({
             className='add__btn'
             onClick={this.onButtonClick}
             ref='alert_button'
-            disabled={this.state.btnIsDisabled}>
+            disabled={(agreeNotChecked || authorIsEmpty || textIsEmpty)}>
             Show alert
           </button>
         </form>
