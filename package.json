@@ -1,7 +1,7 @@
 {
-  "name": "react-ru-tutorial",
+  "name": "react",
   "version": "1.0.0",
-  "description": "React RU tutorial",
+  "description": "React",
   "main": "index.html",
   "scripts": {
     "start": "node server.js"
